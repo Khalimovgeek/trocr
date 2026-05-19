@@ -84,7 +84,7 @@ class WordCorpus:
 
         in_line = False
         start = 0
-        threshold = 8
+        threshold = 0
 
         for i, val in enumerate(hist):
 
