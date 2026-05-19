@@ -12,8 +12,8 @@ def main():
         # threshold = Utils.threshold(clahe, max_value=255, block_size=21, C=7)
         # morphological = Utils.morphological_operations(clahe, kernel_size=(3, 3), iterations=1)
         
-        imagePlot.show_image(clahe, title="Processed Image")
-        #imagePlot.plot_images([i, deionised, clahe], titles=["Original", "Deionised", "CLAHE"]) 
+        #imagePlot.show_image(clahe, title="Processed Image")
+        imagePlot.plot_images([i, deionised, clahe], titles=["Original", "Deionised", "CLAHE"]) 
         text = Utils.ocr(clahe)
         print(text)
 if __name__ == "__main__":
