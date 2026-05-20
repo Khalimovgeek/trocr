@@ -4,7 +4,7 @@ import pytesseract
 from utils import imagePlot,Utils
 ocr = PaddleOCR(
     use_angle_cls=True,
-    lang='devanagari',
+    lang='ta',
 )
 
 image_path = 'images/testml5.jpg'
@@ -27,6 +27,7 @@ for result in results[0]:
     y_max = int(max(y_coords))
 
     cropped = image[y_min:y_max, x_min:x_max]
+    # imagePlot.show_image(cropped, title="Cropped Image")
 #     deionised = Utils.bilateral_filter(Utils.gray_scale(cropped))
 #     # clahe = Utils.clahe(deionised, clip_limit=1.5, tile_grid_size=(6,6))
 #     # threshold = Utils.threshold(clahe, max_value=255, block_size=15, C=4)
@@ -76,32 +77,27 @@ for result in results[0]:
         block_size=15,
         C=3
     )
-    threshold = Utils.threshold(
-        threshold,
-        max_value=255,
-        block_size=15,
-        C=3
+    kernel = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE,
+        (2,2)
     )
-    # kernel = cv2.getStructuringElement(
-    #     cv2.MORPH_ELLIPSE,
-    #     (2,2)
-    # )
 
-    # closed = cv2.morphologyEx(
-    #     threshold,
-    #     cv2.MORPH_CLOSE,
-    #     kernel
-    # )
+    closed = cv2.morphologyEx(
+        threshold,
+        cv2.MORPH_CLOSE,
+        kernel
+    )
 
-    # smoothed = cv2.morphologyEx(
-    #     closed,
-    #     cv2.MORPH_OPEN,
-    #     kernel
-    # )
+    smoothed = cv2.morphologyEx(
+        closed,
+        cv2.MORPH_OPEN,
+        kernel
+    )
 
-    # imagePlot.show_image(smoothed, title="Smoothed Image")
-    # imagePlot.plot_images([cropped, gray, deionised, upscaled, blurred, threshold, closed, smoothed], titles=["Cropped", "Gray", "Deionised", "Upscaled", "Blurred", "Threshold", "Closed", "Smoothed"])
-    text = pytesseract.image_to_string(threshold, lang='mal', config='--psm 11')
+    # imagePlot.show_image(closed, title="closed Image")
+    # imagePlot.plot_images([cropped, gray, upscaled, blurred, threshold,closed, smoothed], titles=["Cropped", "Gray", "Upscaled", "Blurred", "Threshold", "closed", "smoothed"])
+    custom_config = r'--oem 1 --psm 7 --tessdata-dir "custom_tessdata"'
+    text = pytesseract.image_to_string(threshold, lang='mal', config=custom_config)
     text = text.replace('\x0c', '')
     text = text.replace('\n', ' ')
 
