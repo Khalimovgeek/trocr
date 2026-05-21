@@ -7,7 +7,7 @@ ocr = PaddleOCR(
     lang='ta',
 )
 
-image_path = 'images/testml4.jpg'
+image_path = 'images/page_2.jpg'
 
 results = ocr.ocr(image_path)
 
@@ -27,8 +27,8 @@ for result in results[0]:
     y_max = int(max(y_coords))
 
     cropped = image[y_min:y_max, x_min:x_max]
-    # cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
-    # cv2.imwrite('bounding box.jpg', image)
+    cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+    cv2.imwrite('bounding box.jpg', image)
     # imagePlot.show_image(cropped, title="Cropped Image")
 #     deionised = Utils.bilateral_filter(Utils.gray_scale(cropped))
 #     # clahe = Utils.clahe(deionised, clip_limit=1.5, tile_grid_size=(6,6))
@@ -98,7 +98,7 @@ for result in results[0]:
 
     # imagePlot.show_image(closed, title="closed Image")
     # imagePlot.plot_images([cropped, gray, upscaled, blurred, threshold,closed, smoothed], titles=["Cropped", "Gray", "Upscaled", "Blurred", "Threshold", "closed", "smoothed"])
-    custom_config = r'--oem 1 --psm 7 --tessdata-dir "set2"'
+    custom_config = r'--oem 1 --psm 6 --tessdata-dir "set2"'
     text = pytesseract.image_to_string(gray, lang='mal', config=custom_config)
     text = text.replace('\x0c', '')
     text = text.replace('\n', ' ')
