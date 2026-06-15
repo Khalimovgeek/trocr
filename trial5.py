@@ -2,9 +2,14 @@ from paddleocr import PaddleOCR
 import cv2, re
 import pytesseract
 from utils import imagePlot,Utils
+# ocr = PaddleOCR(
+#     use_angle_cls=True,
+#     lang='ta',
+# )
+
 ocr = PaddleOCR(
     use_angle_cls=True,
-    lang='ta',
+    lang='ta'
 )
 
 image_path = 'images/page_2.jpg'
@@ -13,19 +18,20 @@ results = ocr.ocr(image_path)
 
 image = cv2.imread(image_path)
 texts = []
-for result in results[0]:
+# Apply the enhanced 2D vertical and horizontal sorting
+sorted_line_blocks = Utils.sort_bounding_boxes_2d(results[0])
 
+for result in sorted_line_blocks:
     box = result[0]
-
+    
     x_coords = [point[0] for point in box]
     y_coords = [point[1] for point in box]
-
-    x_min = int(min(x_coords))
-    x_max = int(max(x_coords))
-
-    y_min = int(min(y_coords))
-    y_max = int(max(y_coords))
-
+    
+    x_min = max(0, int(min(x_coords)) - 8)
+    x_max = min(image.shape[1], int(max(x_coords)) + 8)
+    y_min = max(0, int(min(y_coords)) - 8)
+    y_max = min(image.shape[0], int(max(y_coords)) + 8)
+    
     cropped = image[y_min:y_max, x_min:x_max]
     cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
     cv2.imwrite('bounding box.jpg', image)
