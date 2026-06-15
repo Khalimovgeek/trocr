@@ -206,8 +206,8 @@ for result in sorted_line_blocks:
         texts_with_positions.append((box, text))
 
 
-# Save the bounding box image to verify detection coverage
-cv2.imwrite('bounding_box_output.jpg', original_image)
+# # Save the bounding box image to verify detection coverage
+# cv2.imwrite('bounding_box_output.jpg', original_image)
 
 # Reconstruct the text into proper lines
 structured_lines = Utils.reconstruct_lines(texts_with_positions)
