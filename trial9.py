@@ -170,7 +170,7 @@ for result in sorted_line_blocks:
     cropped = original_image[y_min:y_max, x_min:x_max]
     
     # Optional: Draw bounding box for debugging
-    cv2.rectangle(original_image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+    # cv2.rectangle(original_image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
     
     # ==========================================
     # TESSERACT LINE PREPROCESSING
